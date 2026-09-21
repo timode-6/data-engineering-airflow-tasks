@@ -140,3 +140,7 @@ coverage-reports/
 xunit-reports/
 report.json
 report.xml
+spark_demo_course/
+
+*.crc
+1.csv/
