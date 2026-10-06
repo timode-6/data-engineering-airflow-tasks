@@ -29,8 +29,8 @@ uv venv --python 3.9 .venv
 source .venv/bin/activate
 uv pip install -r requirements.txt
 
-export JAVA_HOME=/usr/lib/jvm/java-8-openjdk/jre     
-java -version                                        
+export JAVA_HOME=/usr/lib/jvm/java-8-openjdk/jre
+java -version
 ```
 
 
@@ -79,6 +79,20 @@ export PYSPARK_DRIVER_PYTHON=$(which python)
 
 `SPARK_MASTER_HOST` pins the master to a predictable address. Without it the master URL
 is built from the hostname, which on many Linux setups resolves to `127.0.1.1`
+
+`SPARK_CONF_DIR` is not committed — it holds absolute paths. Create it once:
+
+```bash
+cd 3_Spark_Basics
+mkdir -p conf for_history
+printf 'spark.eventLog.enabled true\nspark.eventLog.dir file://%s/for_history\nspark.history.fs.logDirectory file://%s/for_history\n' "$PWD" "$PWD" > conf/spark-defaults.conf
+```
+
+Then, with the PySpark venv active:
+
+```bash
+source env.fish      # sets JAVA_HOME, SPARK_HOME, SPARK_CONF_DIR and the PySpark interpreters
+```
 
 ### Cluster
 

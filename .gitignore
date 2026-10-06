@@ -144,3 +144,5 @@ spark_demo_course/
 
 *.crc
 1.csv/
+spark/3_Spark_Basics/conf/
+spark/3_Spark_Basics/for_history/
