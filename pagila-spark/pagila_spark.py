@@ -1,3 +1,19 @@
+"""Pagila analytics in PySpark — seven questions, DataFrame API only, no SQL
+
+Tables are read from PostgreSQL over JDBC. Tested against Pagila v3.1.0 on
+PostgreSQL 16, with Spark 3.1.3 on Java 8 and Python 3.9
+
+Run:
+    python pagila_spark.py
+
+Connection settings come from the environment; the defaults suit the container in
+docker-compose.yml, which publishes 5433 to avoid colliding with a local 5432:
+    PAGILA_JDBC_URL    jdbc:postgresql://127.0.0.1:5433/pagila
+    PAGILA_USER        postgres
+    PAGILA_PASSWORD    no default — see README.md
+
+"""
+
 from __future__ import annotations
 
 import os
@@ -6,6 +22,8 @@ from pyspark.sql import DataFrame, SparkSession
 from pyspark.sql import functions as F
 from pyspark.sql.window import Window
 
+MAX_DISPLAY_ROWS = 50
+
 JDBC_DRIVER_PACKAGE = "org.postgresql:postgresql:42.7.3"
 
 JDBC_URL = os.environ.get("PAGILA_JDBC_URL", "jdbc:postgresql://127.0.0.1:5433/pagila")
@@ -13,7 +31,11 @@ JDBC_USER = os.environ.get("PAGILA_USER", "postgres")
 
 JDBC_PASSWORD = os.environ.get("PAGILA_PASSWORD")
 if not JDBC_PASSWORD:
-    raise SystemExit("PAGILA_PASSWORD is not set")
+    raise SystemExit("PAGILA_PASSWORD is not set — see README.md")
+
+
+
+# loading
 
 def create_session() -> SparkSession:
     return (
@@ -66,7 +88,11 @@ def load_tables(spark: SparkSession) -> dict[str, DataFrame]:
     }
 
 
+# queries
+
+
 def films_per_category(t: dict[str, DataFrame]) -> DataFrame:
+    """1. Number of films in each category, descending"""
     return (
         t["category"]
         .join(t["film_category"], "category_id", "left")
@@ -78,6 +104,7 @@ def films_per_category(t: dict[str, DataFrame]) -> DataFrame:
 
 
 def top_rented_actors(t: dict[str, DataFrame], n: int = 10) -> DataFrame:
+    """2. The ten actors whose films were rented most often"""
     return (
         t["actor"]
         .join(t["film_actor"], "actor_id")
@@ -91,6 +118,8 @@ def top_rented_actors(t: dict[str, DataFrame], n: int = 10) -> DataFrame:
 
 
 def top_revenue_category(t: dict[str, DataFrame]) -> DataFrame:
+    """3. The category that earned the most money"""
+    by_revenue = Window.orderBy(F.desc("revenue"))
     return (
         t["category"]
         .join(t["film_category"], "category_id")
@@ -99,17 +128,19 @@ def top_revenue_category(t: dict[str, DataFrame]) -> DataFrame:
         .join(t["payment"], "rental_id")
         .groupBy("category_id", "category")
         .agg(F.sum("amount").alias("revenue"))
-        .orderBy(F.desc("revenue"))
-        .limit(1)
+        .withColumn("rank", F.rank().over(by_revenue))
+        .filter(F.col("rank") == 1)
         .select("category", "revenue")
     )
 
 
 def films_not_in_inventory(t: dict[str, DataFrame]) -> DataFrame:
+    """4. Films absent from inventory"""
     return t["film"].join(t["inventory"], "film_id", "left_anti").orderBy("title")
 
 
 def top_children_actors(t: dict[str, DataFrame], n: int = 3) -> DataFrame:
+    """5. The three actors appearing most often in "Children" films"""
     children = t["category"].filter(F.col("category") == "Children")
     film_counts = (
         t["actor"]
@@ -129,6 +160,7 @@ def top_children_actors(t: dict[str, DataFrame], n: int = 3) -> DataFrame:
 
 
 def customers_by_city(t: dict[str, DataFrame]) -> DataFrame:
+    """6. Active and inactive customers per city"""
     return (
         t["city"]
         .join(t["address"], "city_id")
@@ -144,6 +176,8 @@ def customers_by_city(t: dict[str, DataFrame]) -> DataFrame:
 
 
 def top_category_by_rental_hours(t: dict[str, DataFrame]) -> DataFrame:
+    """7. Category with the most rental hours, for cities starting with "a" and,
+    separately, cities containing "-" """
     rentals = (
         t["rental"]
         .filter(F.col("return_date").isNotNull())
@@ -176,8 +210,8 @@ def top_category_by_rental_hours(t: dict[str, DataFrame]) -> DataFrame:
 
     by_hours = Window.partitionBy("city_group").orderBy(F.desc("total_hours"))
     return (
-        per_group.withColumn("rn", F.row_number().over(by_hours))
-        .filter(F.col("rn") == 1)
+        per_group.withColumn("rank", F.rank().over(by_hours))
+        .filter(F.col("rank") == 1)
         .select(
             "city_group",
             "category",
@@ -187,9 +221,12 @@ def top_category_by_rental_hours(t: dict[str, DataFrame]) -> DataFrame:
     )
 
 
+
+
 def show_all(title: str, df: DataFrame) -> None:
-    print(f"\n{title}")
-    df.show(df.count(), truncate=False)
+    rows = df.count()
+    print(f"\n{title} — {rows} rows, showing up to {MAX_DISPLAY_ROWS}")
+    df.show(MAX_DISPLAY_ROWS, truncate=False)
 
 
 def main() -> None:
