@@ -1,0 +1,16 @@
+services:
+  pagila:
+    image: postgres:16
+    container_name: pagila-postgres
+    environment:
+      POSTGRES_PASSWORD: ${PAGILA_PASSWORD:?set PAGILA_PASSWORD in .env}
+      POSTGRES_DB: pagila
+    ports:
+      - "5433:5432"
+    volumes:
+      - pagila-data:/var/lib/postgresql/data
+      - ./pagila/pagila-schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+      - ./pagila/pagila-data.sql:/docker-entrypoint-initdb.d/02-data.sql:ro
+
+volumes:
+  pagila-data:
