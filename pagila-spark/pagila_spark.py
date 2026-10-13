@@ -1,17 +1,28 @@
-"""Pagila analytics in PySpark — seven questions, DataFrame API only, no SQL
+"""Pagila analytics in PySpark — seven questions, DataFrame API only, no SQL.
 
 Tables are read from PostgreSQL over JDBC. Tested against Pagila v3.1.0 on
-PostgreSQL 16, with Spark 3.1.3 on Java 8 and Python 3.9
+PostgreSQL 16, with Spark 3.1.3 on Java 8 and Python 3.9.
 
-Run:
+Configuration comes from the environment. The script does NOT read .env itself —
+docker-compose does that for the container, but a Python process does not, so the
+variables have to be exported into the shell first:
+
+    bash/zsh:   set -a; source .env; set +a
+    fish:       for l in (grep -v '^#' .env | string match -er .); set -gx (string split -m1 = $l); end
+
+Then:
+
     python pagila_spark.py
 
-Connection settings come from the environment; the defaults suit the container in
-docker-compose.yml, which publishes 5433 to avoid colliding with a local 5432:
-    PAGILA_JDBC_URL    jdbc:postgresql://127.0.0.1:5433/pagila
-    PAGILA_USER        postgres
-    PAGILA_PASSWORD    no default — see README.md
+    PAGILA_JDBC_URL    default jdbc:postgresql://127.0.0.1:5433/pagila
+    PAGILA_USER        default postgres
+    PAGILA_PASSWORD    no default — the script exits if it is unset
 
+The PostgreSQL JDBC driver is fetched from Maven Central on first run via
+spark.jars.packages. That only works when this script creates the session itself, as
+above. Under spark-submit the driver JVM is already running, so pass it explicitly:
+
+    spark-submit --packages org.postgresql:postgresql:42.7.3 pagila_spark.py
 """
 
 from __future__ import annotations
@@ -24,18 +35,21 @@ from pyspark.sql.window import Window
 
 MAX_DISPLAY_ROWS = 50
 
-JDBC_DRIVER_PACKAGE = "org.postgresql:postgresql:42.7.3"
+JDBC_DRIVER_PACKAGE = "org.postgresql:postgresql:42.7.3"  # the Java 8 build
 
 JDBC_URL = os.environ.get("PAGILA_JDBC_URL", "jdbc:postgresql://127.0.0.1:5433/pagila")
 JDBC_USER = os.environ.get("PAGILA_USER", "postgres")
 
 JDBC_PASSWORD = os.environ.get("PAGILA_PASSWORD")
 if not JDBC_PASSWORD:
-    raise SystemExit("PAGILA_PASSWORD is not set — see README.md")
-
+    raise SystemExit(
+        "PAGILA_PASSWORD is not set. Export it first - see the Setup section of "
+        "README.md. Sourcing .env is not enough for a Python process."
+    )
 
 
 # loading
+
 
 def create_session() -> SparkSession:
     return (
@@ -46,6 +60,12 @@ def create_session() -> SparkSession:
 
 
 def read_table(spark: SparkSession, table: str, *columns: str) -> DataFrame:
+    """Read one table over JDBC, projecting only the columns the queries use.
+
+    The projection is pushed into the SELECT the driver sends, so unused columns
+    never cross the wire. cache() matters because most tables are read by several
+    queries; without it each one re-queries PostgreSQL.
+    """
     return (
         spark.read.format("jdbc")
         .option("url", JDBC_URL)
@@ -84,7 +104,8 @@ def load_tables(spark: SparkSession) -> dict[str, DataFrame]:
             spark, "customer", "customer_id", "address_id", "active"
         ),
         "address": read_table(spark, "address", "address_id", "city_id"),
-        "city": read_table(spark, "city", "city_id", "city"),
+        "city": read_table(spark, "city", "city_id", "city", "country_id"),
+        "country": read_table(spark, "country", "country_id", "country"),
     }
 
 
@@ -135,8 +156,13 @@ def top_revenue_category(t: dict[str, DataFrame]) -> DataFrame:
 
 
 def films_not_in_inventory(t: dict[str, DataFrame]) -> DataFrame:
-    """4. Films absent from inventory"""
-    return t["film"].join(t["inventory"], "film_id", "left_anti").orderBy("title")
+    """4. Titles of films absent from inventory"""
+    return (
+        t["film"]
+        .join(t["inventory"], "film_id", "left_anti")
+        .orderBy("title")
+        .select("title")
+    )
 
 
 def top_children_actors(t: dict[str, DataFrame], n: int = 3) -> DataFrame:
@@ -163,15 +189,16 @@ def customers_by_city(t: dict[str, DataFrame]) -> DataFrame:
     """6. Active and inactive customers per city"""
     return (
         t["city"]
+        .join(t["country"], "country_id")
         .join(t["address"], "city_id")
         .join(t["customer"], "address_id")
-        .groupBy("city_id", "city")
+        .groupBy("city_id", "city", "country")
         .agg(
             F.count(F.when(F.col("active") == 1, True)).alias("active_customers"),
             F.count(F.when(F.col("active") == 0, True)).alias("inactive_customers"),
         )
-        .orderBy(F.desc("inactive_customers"), "city")
-        .select("city", "active_customers", "inactive_customers")
+        .orderBy(F.desc("inactive_customers"), "city", "country")
+        .select("city", "country", "active_customers", "inactive_customers")
     )
 
 
@@ -221,12 +248,18 @@ def top_category_by_rental_hours(t: dict[str, DataFrame]) -> DataFrame:
     )
 
 
+# output
 
 
 def show_all(title: str, df: DataFrame) -> None:
-    rows = df.count()
-    print(f"\n{title} — {rows} rows, showing up to {MAX_DISPLAY_ROWS}")
-    df.show(MAX_DISPLAY_ROWS, truncate=False)
+    """Print the total row count, then at most MAX_DISPLAY_ROWS rows"""
+    df = df.cache()
+    try:
+        rows = df.count()
+        print(f"\n{title} — {rows} rows, showing up to {MAX_DISPLAY_ROWS}")
+        df.show(MAX_DISPLAY_ROWS, truncate=False)
+    finally:
+        df.unpersist()
 
 
 def main() -> None:
