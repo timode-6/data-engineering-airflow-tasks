@@ -5,7 +5,7 @@ unions the result, and writes a CSV. It was run on a local standalone cluster â€
 master and two workers with different resources (2 cores / 3 GB and 3 cores / 4 GB) â€”
 rather than in local mode.
 
-![Spark master UI](3_Spark_Basics/img/master_ui.png)
+![Spark master UI](img/master_ui.png)
 
 Plans were captured with both `queryExecution().toString()` and
 `explainString(..., 'EXTENDED')`; the two outputs are identical. Metrics come from the
@@ -93,7 +93,7 @@ ReadSchema:       struct<rank:int,name:string,net_worth:string,bday:string,age:i
 
 ## 4. Measured in the SQL tab
 
-![SQL tab DAG](3_Spark_Basics/img/sql_dag.png)
+![SQL tab DAG](img/sql_dag.png)
 
 | Node | Rows | |
 | --- | --- | --- |
@@ -122,7 +122,7 @@ shuffle, so each side writes its own part file.
 
 ## 5. Measured in the Stages tab
 
-![Stages](3_Spark_Basics/img/stages.png)
+![Stages](img/stages.png)
 
 | Stage | Description | Tasks | Input | Output |
 | --- | --- | --- | --- | --- |
