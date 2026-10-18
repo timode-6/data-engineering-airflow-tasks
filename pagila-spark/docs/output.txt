@@ -1,0 +1,175 @@
+1. Films per category — 16 rows, showing up to 50
++-----------+-----+
+|category   |films|
++-----------+-----+
+|Sports     |74   |
+|Foreign    |73   |
+|Family     |69   |
+|Documentary|68   |
+|Animation  |66   |
+|Action     |64   |
+|New        |63   |
+|Drama      |62   |
+|Games      |61   |
+|Sci-Fi     |61   |
+|Children   |60   |
+|Comedy     |58   |
+|Classics   |57   |
+|Travel     |57   |
+|Horror     |56   |
+|Music      |51   |
++-----------+-----+
+
+
+2. Ten most-rented actors — 10 rows, showing up to 50
++--------+----------+-----------+-------+
+|actor_id|first_name|last_name  |rentals|
++--------+----------+-----------+-------+
+|107     |GINA      |DEGENERES  |753    |
+|181     |MATTHEW   |CARREY     |678    |
+|198     |MARY      |KEITEL     |674    |
+|144     |ANGELA    |WITHERSPOON|654    |
+|102     |WALTER    |TORN       |640    |
+|60      |HENRY     |BERRY      |612    |
+|150     |JAYNE     |NOLTE      |611    |
+|37      |VAL       |BOLGER     |605    |
+|23      |SANDRA    |KILMER     |604    |
+|90      |SEAN      |GUINESS    |599    |
++--------+----------+-----------+-------+
+
+
+3. Highest-earning category — 1 rows, showing up to 50
++--------+-------+
+|category|revenue|
++--------+-------+
+|Sports  |5314.21|
++--------+-------+
+
+
+4. Films not in inventory — 42 rows, showing up to 50
++----------------------+
+|title                 |
++----------------------+
+|ALICE FANTASIA        |
+|APOLLO TEEN           |
+|ARGONAUTS TOWN        |
+|ARK RIDGEMONT         |
+|ARSENIC INDEPENDENCE  |
+|BOONDOCK BALLROOM     |
+|BUTCH PANTHER         |
+|CATCH AMISTAD         |
+|CHINATOWN GLADIATOR   |
+|CHOCOLATE DUCK        |
+|COMMANDMENTS EXPRESS  |
+|CROSSING DIVORCE      |
+|CROWDS TELEMARK       |
+|CRYSTAL BREAKING      |
+|DAZED PUNK            |
+|DELIVERANCE MULHOLLAND|
+|FIREHOUSE VIETNAM     |
+|FLOATS GARDEN         |
+|FRANKENSTEIN STRANGER |
+|GLADIATOR WESTWARD    |
+|GUMP DATE             |
+|HATE HANDICAP         |
+|HOCUS FRIDA           |
+|KENTUCKIAN GIANT      |
+|KILL BROTHERHOOD      |
+|MUPPET MILE           |
+|ORDER BETRAYED        |
+|PEARL DESTINY         |
+|PERDITION FARGO       |
+|PSYCHO SHRUNK         |
+|RAIDERS ANTITRUST     |
+|RAINBOW SHOCK         |
+|ROOF CHAMPION         |
+|SISTER FREDDY         |
+|SKY MIRACLE           |
+|SUICIDES SILENCE      |
+|TADPOLE PARK          |
+|TREASURE COMMAND      |
+|VILLAIN DESPERATE     |
+|VOLUME HOUSE          |
+|WAKE JAWS             |
+|WALLS ARTIST          |
++----------------------+
+
+
+5. Top actors in "Children", including ties — 5 rows, showing up to 50
++--------+----------+---------+-----+
+|actor_id|first_name|last_name|films|
++--------+----------+---------+-----+
+|17      |HELEN     |VOIGHT   |7    |
+|80      |RALPH     |CRUZ     |5    |
+|127     |KEVIN     |GARLAND  |5    |
+|140     |WHOOPI    |HURT     |5    |
+|66      |MARY      |TANDY    |5    |
++--------+----------+---------+-----+
+
+
+6. Active and inactive customers per city — 597 rows, showing up to 50
++-----------------------+--------------------+----------------+------------------+
+|city                   |country             |active_customers|inactive_customers|
++-----------------------+--------------------+----------------+------------------+
+|Amroha                 |India               |0               |1                 |
+|Bat Yam                |Israel              |0               |1                 |
+|Charlotte Amalie       |Virgin Islands, U.S.|0               |1                 |
+|Coatzacoalcos          |Mexico              |0               |1                 |
+|Daxian                 |China               |0               |1                 |
+|Kamyin                 |Russian Federation  |0               |1                 |
+|Ktahya                 |Turkey              |0               |1                 |
+|Kumbakonam             |India               |0               |1                 |
+|Najafabad              |Iran                |0               |1                 |
+|Pingxiang              |China               |0               |1                 |
+|Southend-on-Sea        |United Kingdom      |0               |1                 |
+|Szkesfehrvr            |Hungary             |0               |1                 |
+|Uluberia               |India               |0               |1                 |
+|Wroclaw                |Poland              |0               |1                 |
+|Xiangfan               |China               |0               |1                 |
+|A Corua (La Corua)     |Spain               |1               |0                 |
+|Abha                   |Saudi Arabia        |1               |0                 |
+|Abu Dhabi              |United Arab Emirates|1               |0                 |
+|Acua                   |Mexico              |1               |0                 |
+|Adana                  |Turkey              |1               |0                 |
+|Addis Abeba            |Ethiopia            |1               |0                 |
+|Aden                   |Yemen               |1               |0                 |
+|Adoni                  |India               |1               |0                 |
+|Ahmadnagar             |India               |1               |0                 |
+|Akishima               |Japan               |1               |0                 |
+|Akron                  |United States       |1               |0                 |
+|Alessandria            |Italy               |1               |0                 |
+|Allappuzha (Alleppey)  |India               |1               |0                 |
+|Allende                |Mexico              |1               |0                 |
+|Almirante Brown        |Argentina           |1               |0                 |
+|Alvorada               |Brazil              |1               |0                 |
+|Ambattur               |India               |1               |0                 |
+|Amersfoort             |Netherlands         |1               |0                 |
+|Angra dos Reis         |Brazil              |1               |0                 |
+|Anpolis                |Brazil              |1               |0                 |
+|Antofagasta            |Chile               |1               |0                 |
+|Aparecida de Goinia    |Brazil              |1               |0                 |
+|Apeldoorn              |Netherlands         |1               |0                 |
+|Araatuba               |Brazil              |1               |0                 |
+|Arak                   |Iran                |1               |0                 |
+|Arecibo                |Puerto Rico         |1               |0                 |
+|Arlington              |United States       |1               |0                 |
+|Ashdod                 |Israel              |1               |0                 |
+|Ashgabat               |Turkmenistan        |1               |0                 |
+|Ashqelon               |Israel              |1               |0                 |
+|Asuncin                |Paraguay            |1               |0                 |
+|Athenai                |Greece              |1               |0                 |
+|Atinsk                 |Russian Federation  |1               |0                 |
+|Atlixco                |Mexico              |1               |0                 |
+|Augusta-Richmond County|United States       |1               |0                 |
++-----------------------+--------------------+----------------+------------------+
+only showing top 50 rows
+
+
+7. Most rental hours by category, per city group — 2 rows, showing up to 50
++------------------------+--------+------------------+
+|city_group              |category|total_rental_hours|
++------------------------+--------+------------------+
+|cities containing "-"   |Foreign |6472.15           |
+|cities starting with "a"|Sports  |12360.35          |
++------------------------+--------+------------------+
+
