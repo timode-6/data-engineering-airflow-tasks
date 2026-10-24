@@ -1,0 +1,36 @@
+      dag_id      |                           run_id                           |                task_id                 |      state      | seconds |                                                                         value                                                                         
+------------------+------------------------------------------------------------+----------------------------------------+-----------------+---------+-------------------------------------------------------------------------------------------------------------------------------------------------------
+ reviews_ingest   | manual__2026-10-08T10:27:22.192967+00:00                   | wait_for_file                          | failed          |     6.2 | 
+ reviews_ingest   | manual__2026-10-08T10:27:22.192967+00:00                   | check_file_has_data                    | upstream_failed |     0.0 | 
+ reviews_ingest   | manual__2026-10-08T10:27:22.192967+00:00                   | log_empty_file                         | upstream_failed |     0.0 | 
+ reviews_ingest   | manual__2026-10-08T10:27:22.192967+00:00                   | transform_reviews.replace_nulls        | upstream_failed |     0.0 | 
+ reviews_ingest   | manual__2026-10-08T10:27:22.192967+00:00                   | transform_reviews.sort_by_created_date | upstream_failed |     0.0 | 
+ reviews_ingest   | manual__2026-10-08T10:27:22.192967+00:00                   | transform_reviews.clean_content        | upstream_failed |     0.0 | 
+ reviews_ingest   | manual__2026-10-08T10:36:24.733968+00:00                   | wait_for_file                          | success         |     0.1 | 
+ reviews_ingest   | manual__2026-10-08T10:36:24.733968+00:00                   | check_file_has_data                    | success         |     0.1 | 
+ reviews_ingest   | manual__2026-10-08T10:36:24.733968+00:00                   | log_empty_file                         | skipped         |         | 
+ reviews_ingest   | manual__2026-10-08T10:36:24.733968+00:00                   | transform_reviews.replace_nulls        | success         |     8.2 | {"rows": 307057, "empty_fields_filled": 703092, "literal_nulls_replaced": 18}
+ reviews_ingest   | manual__2026-10-08T10:36:24.733968+00:00                   | transform_reviews.sort_by_created_date | success         |     6.3 | {"rows": 307057, "unparseable_dates": 0}
+ reviews_ingest   | manual__2026-10-08T10:36:24.733968+00:00                   | transform_reviews.clean_content        | success         |     7.1 | {"rows": 307057, "content_changed": 41278, "content_emptied": 7320}
+ reviews_ingest   | manual__2026-10-19T11:13:27.746349+00:00                   | wait_for_file                          | success         |     3.8 | 
+ reviews_ingest   | manual__2026-10-19T11:13:27.746349+00:00                   | check_file_has_data                    | success         |     0.1 | 
+ reviews_ingest   | manual__2026-10-19T11:13:27.746349+00:00                   | log_empty_file                         | skipped         |         | 
+ reviews_ingest   | manual__2026-10-19T11:13:27.746349+00:00                   | transform_reviews.replace_nulls        | success         |     6.0 | {"rows": 307057, "empty_fields_filled": 703092, "literal_nulls_replaced": 18}
+ reviews_ingest   | manual__2026-10-19T11:13:27.746349+00:00                   | transform_reviews.sort_by_created_date | success         |     4.5 | {"rows": 307057, "unparseable_dates": 0}
+ reviews_ingest   | manual__2026-10-19T11:13:27.746349+00:00                   | transform_reviews.clean_content        | success         |     4.5 | {"rows": 307057, "content_changed": 41278, "content_emptied": 7320}
+ reviews_ingest   | manual__2026-10-19T12:09:55.077084+00:00                   | wait_for_file                          | success         |     0.1 | 
+ reviews_ingest   | manual__2026-10-19T12:09:55.077084+00:00                   | check_file_has_data                    | success         |     0.1 | 
+ reviews_ingest   | manual__2026-10-19T12:09:55.077084+00:00                   | transform_reviews.replace_nulls        | skipped         |         | 
+ reviews_ingest   | manual__2026-10-19T12:09:55.077084+00:00                   | transform_reviews.sort_by_created_date | skipped         |     0.0 | 
+ reviews_ingest   | manual__2026-10-19T12:09:55.077084+00:00                   | log_empty_file                         | success         |     0.1 | "[2026-10-19T12:09:57+00:00] EMPTY INPUT: /opt/airflow/data/incoming/tiktok_google_play_reviews.csv contains no data rows; skipping transformations."
+ reviews_ingest   | manual__2026-10-19T12:09:55.077084+00:00                   | transform_reviews.clean_content        | skipped         |     0.0 | 
+ reviews_ingest   | manual__2026-10-24T17:19:29.195265+00:00                   | wait_for_file                          | success         |     3.5 | 
+ reviews_ingest   | manual__2026-10-24T17:19:29.195265+00:00                   | check_file_has_data                    | success         |     0.1 | 
+ reviews_ingest   | manual__2026-10-24T17:19:29.195265+00:00                   | log_empty_file                         | skipped         |         | 
+ reviews_ingest   | manual__2026-10-24T17:19:29.195265+00:00                   | transform_reviews.replace_nulls        | success         |     5.7 | {"rows": 307057, "empty_fields_filled": 703092, "literal_nulls_replaced": 18}
+ reviews_ingest   | manual__2026-10-24T17:19:29.195265+00:00                   | transform_reviews.sort_by_created_date | success         |     4.2 | {"rows": 307057, "unparseable_dates": 0}
+ reviews_ingest   | manual__2026-10-24T17:19:29.195265+00:00                   | transform_reviews.clean_content        | success         |     4.5 | {"rows": 307057, "content_changed": 41278, "content_emptied": 7320}
+ reviews_to_mongo | asset_triggered__2026-10-24T17:19:50.147353+00:00_a98ifKD9 | load_to_mongodb                        | success         |     6.6 | {"inserted": 307057}
+ reviews_to_mongo | asset_triggered__2026-10-24T17:19:50.147353+00:00_a98ifKD9 | verify_load                            | success         |     2.6 | {"days": 79, "documents": 307057, "short_content": 53238}
+(32 rows)
+
