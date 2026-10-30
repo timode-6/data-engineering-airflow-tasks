@@ -1,0 +1,40 @@
+-- Account setup: a warehouse, the role that owns the DWH, the database, the
+-- schemas, and the service user Airflow connects as. Run as ACCOUNTADMIN.
+--
+-- Before running: create the key pair (README, "Snowflake") and paste the
+-- public key, without its BEGIN/END lines, in place of <public key body>.
+
+USE ROLE ACCOUNTADMIN;
+
+CREATE WAREHOUSE IF NOT EXISTS AIRLINE_WH
+  WAREHOUSE_SIZE = 'XSMALL'
+  AUTO_SUSPEND = 60
+  AUTO_RESUME = TRUE
+  INITIALLY_SUSPENDED = TRUE;
+
+-- AIRLINE_ETL owns everything in the DWH; SYSADMIN sits above it
+CREATE ROLE IF NOT EXISTS AIRLINE_ETL;
+GRANT ROLE AIRLINE_ETL TO ROLE SYSADMIN;
+GRANT USAGE, OPERATE ON WAREHOUSE AIRLINE_WH TO ROLE AIRLINE_ETL;
+
+CREATE DATABASE IF NOT EXISTS AIRLINE_DWH;
+GRANT OWNERSHIP ON DATABASE AIRLINE_DWH TO ROLE AIRLINE_ETL COPY CURRENT GRANTS;
+
+-- Your own user gets the role too. The quotes keep a user name with a dot intact
+SET my_user = '"' || CURRENT_USER() || '"';
+GRANT ROLE AIRLINE_ETL TO USER IDENTIFIER($my_user);
+
+-- Airflow's user. TYPE = SERVICE: no password, no MFA, key-pair login only
+CREATE USER IF NOT EXISTS AIRFLOW_SVC
+  TYPE = SERVICE
+  DEFAULT_ROLE = AIRLINE_ETL
+  DEFAULT_WAREHOUSE = AIRLINE_WH;
+ALTER USER AIRFLOW_SVC SET RSA_PUBLIC_KEY = '<public key body>';
+GRANT ROLE AIRLINE_ETL TO USER AIRFLOW_SVC;
+
+-- One schema per layer, plus the audit log; all owned by AIRLINE_ETL
+USE ROLE AIRLINE_ETL;
+CREATE SCHEMA IF NOT EXISTS AIRLINE_DWH.RAW;
+CREATE SCHEMA IF NOT EXISTS AIRLINE_DWH.CORE;
+CREATE SCHEMA IF NOT EXISTS AIRLINE_DWH.MART;
+CREATE SCHEMA IF NOT EXISTS AIRLINE_DWH.AUDIT;
