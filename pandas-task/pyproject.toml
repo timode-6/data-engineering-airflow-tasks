@@ -1,0 +1,23 @@
+# Tool settings only. Dependencies are pinned in requirements.txt, which is
+# what the Docker image installs.
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "F",    # pyflakes
+    "I",    # import order
+    "N",    # PEP 8 naming
+    "UP",   # newer Python syntax
+    "B",    # likely bugs
+    "SIM",  # simplifications
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
