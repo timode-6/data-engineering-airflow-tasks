@@ -1,0 +1,26 @@
+# Additions to the official Airflow compose file (downloaded unmodified).
+x-project-extras: &project-extras
+  environment:
+    AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+    # Airflow's Snowflake connection. No secret in it: the private key is a
+    # file mounted read-only below, and stays outside the repo.
+    AIRFLOW_CONN_SNOWFLAKE_DEFAULT: >-
+      {"conn_type": "snowflake", "login": "AIRFLOW_SVC",
+      "extra": {"account": "${SNOWFLAKE_ACCOUNT:?set SNOWFLAKE_ACCOUNT in .env}",
+      "warehouse": "AIRLINE_WH", "database": "AIRLINE_DWH", "role": "AIRLINE_ETL",
+      "private_key_file": "/opt/airflow/secrets/snowflake_key.p8"}}
+  volumes:
+    - ${AIRFLOW_PROJ_DIR:-.}/data:/opt/airflow/data
+    - ${SNOWFLAKE_PRIVATE_KEY_PATH:?set SNOWFLAKE_PRIVATE_KEY_PATH in .env}:/opt/airflow/secrets/snowflake_key.p8:ro
+
+services:
+  airflow-scheduler:
+    <<: *project-extras
+  airflow-dag-processor:
+    <<: *project-extras
+  airflow-worker:
+    <<: *project-extras
+  airflow-triggerer:
+    <<: *project-extras
+  airflow-apiserver:
+    <<: *project-extras

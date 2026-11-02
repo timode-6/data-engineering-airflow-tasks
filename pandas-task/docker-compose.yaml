@@ -1,0 +1,42 @@
+#   mailpit    catches the alert emails; the inbox is at http://localhost:8025
+#   processor  watches data/incoming/ and raises alerts
+#   replayer   plays the mobile app: sorts the dataset by time and sends it to
+#              data/incoming/ as one journal per minute of log time, then exits
+
+name: log-alerts
+
+x-app: &app
+  build: .
+  image: log-alerts
+  user: "${HOST_UID:-1000}:${HOST_GID:-1000}"
+  volumes:
+    - ./data:/app/data
+    - ./rules.toml:/app/rules.toml:ro
+
+services:
+  mailpit:
+    image: axllent/mailpit:v1.32.0
+    ports:
+      - "8025:8025"
+    environment:
+      MP_MAX_MESSAGES: 0
+
+  processor:
+    <<: *app
+    command: ["process"]
+    environment:
+      SMTP_HOST: mailpit
+      SMTP_PORT: 1025
+      ALERT_EMAIL_TO: oncall@example.com
+    depends_on:
+      mailpit:
+        condition: service_healthy
+
+  replayer:
+    <<: *app
+    command: ["replay"]
+    environment:
+      SPEED: ${SPEED:-3600}
+      JOURNAL_SECONDS: ${JOURNAL_SECONDS:-60}
+    depends_on:
+      - processor
