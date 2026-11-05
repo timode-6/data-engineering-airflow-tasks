@@ -1,0 +1,17 @@
+.env
+
+docker-compose.yaml
+
+logs/
+plugins/
+config/
+
+data/incoming/*
+data/staging/*
+data/processed/*
+!data/**/.gitkeep
+
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/

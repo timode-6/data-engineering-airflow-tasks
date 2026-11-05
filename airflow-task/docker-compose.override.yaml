@@ -1,0 +1,57 @@
+# YAML anchors are file-scoped, so this cannot reuse the upstream x-airflow-common.
+# Repeating it per service is the cost of not editing the upstream file.
+x-project-extras: &project-extras
+  environment:
+    PYTHONPATH: /opt/airflow/include
+    # The upstream file loads over a hundred example DAGs, which bury these two.
+    AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+    # The FileSensor's default connection. Airflow 3 no longer creates default
+    # connections, so without this the sensor fails with "The conn_id
+    # `fs_default` isn't defined". It holds no secret, so it is defined here
+    # rather than in the UI; connections from environment variables are not
+    # listed under Admin -> Connections. mongo_default is the connection the
+    # task asks to configure in Airflow, so it is created there (see README).
+    AIRFLOW_CONN_FS_DEFAULT: '{"conn_type": "fs", "extra": {"path": "/"}}'
+  volumes:
+    - ${AIRFLOW_PROJ_DIR:-.}/include:/opt/airflow/include
+    - ${AIRFLOW_PROJ_DIR:-.}/data:/opt/airflow/data
+
+services:
+  # Reachable from the Airflow containers as mongo:27017 — the compose service
+  # name on the project network. NOT localhost: inside a container localhost is
+  # the container itself. From your own machine (Compass) it is localhost:27017,
+  # via the published port below.
+  mongo:
+    image: mongo:7.0
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER:-root}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD:?set MONGO_PASSWORD in .env — copy .env.example}
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  airflow-scheduler:
+    <<: *project-extras
+  airflow-dag-processor:
+    <<: *project-extras
+  airflow-worker:
+    <<: *project-extras
+  airflow-triggerer:
+    <<: *project-extras
+  airflow-apiserver:
+    <<: *project-extras
+  airflow-init:
+    <<: *project-extras
+
+volumes:
+  # Named, not a bind mount: the database owns this data and should pick its own
+  # uid. Removed by `docker compose down -v`, which also drops every review.
+  mongo-data:

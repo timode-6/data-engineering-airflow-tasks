@@ -1,0 +1,515 @@
+documents in collection: 307057
+expected:                307057
+
+--- 1. top five most frequent comments ---
+[
+  {
+    _id: 'Good',
+    count: 12164
+  },
+  {
+    _id: 'Nice',
+    count: 10050
+  },
+  {
+    _id: '-',
+    count: 7338
+  },
+  {
+    _id: 'Nice app',
+    count: 4950
+  },
+  {
+    _id: 'Good app',
+    count: 3678
+  }
+]
+
+--- 1b. same, excluding the null placeholder ---
+[
+  {
+    _id: 'Good',
+    count: 12164
+  },
+  {
+    _id: 'Nice',
+    count: 10050
+  },
+  {
+    _id: 'Nice app',
+    count: 4950
+  },
+  {
+    _id: 'Good app',
+    count: 3678
+  },
+  {
+    _id: 'Great',
+    count: 2288
+  }
+]
+
+--- 2. content shorter than five characters ---
+matching documents: 53238
+first ten:
+[
+  {
+    _id: 'gp:AOqpTOFOKOxBKWDbUjaoQml2UEqeVgQkcZ84CAPnb6QhkhAr4ZPzN7Uk-LEFPiadIkyIdTbTyDPJD68_rnHZKw',
+    content: 'Cool',
+    score: 5,
+    created_date: ISODate('2022-01-17T10:46:27.000Z')
+  },
+  {
+    _id: 'gp:AOqpTOHLfvI7OYaoZS7MfhKmAxhzO2e54givQyufirtFYxMTAAW5S2_L1Ye_jrVXhRUQAc5MHqpywG8ahMTO0w',
+    content: 'Best',
+    score: 5,
+    created_date: ISODate('2022-01-17T10:46:40.000Z')
+  },
+  {
+    _id: 'gp:AOqpTOHTMZ5SKFjBKouf9AAlILutA9cpvcTIq-HuIKJ2zkEgoToIANqxMrKrpIdjqhnO4j-9_CRqiq0w4RY_XQ',
+    content: 'good',
+    score: 5,
+    created_date: ISODate('2022-01-17T10:48:11.000Z')
+  },
+  {
+    _id: 'gp:AOqpTOG7hv26rf5IRdVqaayphCINMgUx97Ejn1s93KnkaunWPGo3BowzfCaaJdcRQkc2n5xMg-9g-tx-gUbOHw',
+    content: 'Good',
+    score: 1,
+    created_date: ISODate('2022-01-17T10:48:38.000Z')
+  },
+  {
+    _id: 'gp:AOqpTOGGE5xvrqXZk0pdbVWJXAw9kplogt98EBc49gfsMLbYahxxHTUs6skZFaczJOE5mjPSnMmrKxqk6iSMrw',
+    content: 'Nice',
+    score: 5,
+    created_date: ISODate('2022-01-17T10:50:48.000Z')
+  },
+  {
+    _id: 'gp:AOqpTOF4MDqJ9BBW7YGg9kXOe9XJBKs8xan8ACAIA42NoUT-LdJtcsw-JWGcJibhLym0i08N3X-gHbZB1KL1BQ',
+    content: 'Nice',
+    score: 5,
+    created_date: ISODate('2022-01-17T10:52:42.000Z')
+  },
+  {
+    _id: 'gp:AOqpTOGzsTrfyJsjmyd_bjaGDgabAMwLCS1M9l1D-tD1hORasWo3s3B4eD64L_N_BgoGXuxIL6WqNY1BowV7Bg',
+    content: '-',
+    score: 5,
+    created_date: ISODate('2022-01-17T10:52:55.000Z')
+  },
+  {
+    _id: 'gp:AOqpTOH4fZTBTSdz5Pbrh-QD2C_V7nbsEoSpM9uCCd4D8TkqL5YzF5ww3Mn4JRyHyG-UsQ-tF08TwdZLfD7Kbw',
+    content: 'Good',
+    score: 5,
+    created_date: ISODate('2022-01-17T10:55:05.000Z')
+  },
+  {
+    _id: 'gp:AOqpTOHS4H3n6r-_qMNqPa6XXM0ikfzBz1ZpyTGPxdjRvJ01nKmuGqPZPdyk31QIz_cLBIU9Wxu2YGfLUtyFhA',
+    content: 'Nice',
+    score: 3,
+    created_date: ISODate('2022-01-17T10:55:08.000Z')
+  },
+  {
+    _id: 'gp:AOqpTOEx4_DqK3TQFVD7RlksS45yhEzmv2yJNbCi4Q1xsCB_abxceYyVunuWTHnvpbxiEZnR0qnaFdl7DOCUtA',
+    content: 'Nice',
+    score: 5,
+    created_date: ISODate('2022-01-17T10:55:38.000Z')
+  }
+]
+
+--- 3. average rating per day ---
+[
+  {
+    _id: ISODate('2022-01-17T00:00:00.000Z'),
+    average_rating: 4.359368143922773,
+    reviews: 2279
+  },
+  {
+    _id: ISODate('2022-01-18T00:00:00.000Z'),
+    average_rating: 4.316648531011969,
+    reviews: 3676
+  },
+  {
+    _id: ISODate('2022-01-19T00:00:00.000Z'),
+    average_rating: 4.333502152443657,
+    reviews: 3949
+  },
+  {
+    _id: ISODate('2022-01-20T00:00:00.000Z'),
+    average_rating: 4.337206365243748,
+    reviews: 3959
+  },
+  {
+    _id: ISODate('2022-01-21T00:00:00.000Z'),
+    average_rating: 4.378759648655842,
+    reviews: 3757
+  },
+  {
+    _id: ISODate('2022-01-22T00:00:00.000Z'),
+    average_rating: 4.337181337181337,
+    reviews: 4158
+  },
+  {
+    _id: ISODate('2022-01-23T00:00:00.000Z'),
+    average_rating: 4.298110566829951,
+    reviews: 4287
+  },
+  {
+    _id: ISODate('2022-01-24T00:00:00.000Z'),
+    average_rating: 4.323939808481533,
+    reviews: 3655
+  },
+  {
+    _id: ISODate('2022-01-25T00:00:00.000Z'),
+    average_rating: 4.305135951661631,
+    reviews: 3641
+  },
+  {
+    _id: ISODate('2022-01-26T00:00:00.000Z'),
+    average_rating: 4.330061693774537,
+    reviews: 3566
+  },
+  {
+    _id: ISODate('2022-01-27T00:00:00.000Z'),
+    average_rating: 4.323398328690808,
+    reviews: 3590
+  },
+  {
+    _id: ISODate('2022-01-28T00:00:00.000Z'),
+    average_rating: 4.355549358616844,
+    reviews: 3586
+  },
+  {
+    _id: ISODate('2022-01-29T00:00:00.000Z'),
+    average_rating: 4.309254498714653,
+    reviews: 3890
+  },
+  {
+    _id: ISODate('2022-01-30T00:00:00.000Z'),
+    average_rating: 4.320466321243523,
+    reviews: 3860
+  },
+  {
+    _id: ISODate('2022-01-31T00:00:00.000Z'),
+    average_rating: 4.262430126507796,
+    reviews: 3399
+  },
+  {
+    _id: ISODate('2022-02-01T00:00:00.000Z'),
+    average_rating: 4.32960235640648,
+    reviews: 3395
+  },
+  {
+    _id: ISODate('2022-02-02T00:00:00.000Z'),
+    average_rating: 4.306634787806336,
+    reviews: 3346
+  },
+  {
+    _id: ISODate('2022-02-03T00:00:00.000Z'),
+    average_rating: 4.2972027972027975,
+    reviews: 3432
+  },
+  {
+    _id: ISODate('2022-02-04T00:00:00.000Z'),
+    average_rating: 4.3203450327186195,
+    reviews: 3362
+  },
+  {
+    _id: ISODate('2022-02-05T00:00:00.000Z'),
+    average_rating: 4.318132464712269,
+    reviews: 3684
+  },
+  {
+    _id: ISODate('2022-02-06T00:00:00.000Z'),
+    average_rating: 4.304404824331411,
+    reviews: 3814
+  },
+  {
+    _id: ISODate('2022-02-07T00:00:00.000Z'),
+    average_rating: 4.334180790960452,
+    reviews: 3540
+  },
+  {
+    _id: ISODate('2022-02-08T00:00:00.000Z'),
+    average_rating: 4.317391304347826,
+    reviews: 3680
+  },
+  {
+    _id: ISODate('2022-02-09T00:00:00.000Z'),
+    average_rating: 4.296213183730715,
+    reviews: 3565
+  },
+  {
+    _id: ISODate('2022-02-10T00:00:00.000Z'),
+    average_rating: 4.2653118825853795,
+    reviews: 3543
+  },
+  {
+    _id: ISODate('2022-02-11T00:00:00.000Z'),
+    average_rating: 4.285469107551488,
+    reviews: 3496
+  },
+  {
+    _id: ISODate('2022-02-12T00:00:00.000Z'),
+    average_rating: 4.2902367650971005,
+    reviews: 3759
+  },
+  {
+    _id: ISODate('2022-02-13T00:00:00.000Z'),
+    average_rating: 4.28053053053053,
+    reviews: 3996
+  },
+  {
+    _id: ISODate('2022-02-14T00:00:00.000Z'),
+    average_rating: 4.322316555488174,
+    reviews: 3298
+  },
+  {
+    _id: ISODate('2022-02-15T00:00:00.000Z'),
+    average_rating: 4.343069716175255,
+    reviews: 3629
+  },
+  {
+    _id: ISODate('2022-02-16T00:00:00.000Z'),
+    average_rating: 4.267809319764328,
+    reviews: 3734
+  },
+  {
+    _id: ISODate('2022-02-17T00:00:00.000Z'),
+    average_rating: 4.2981501632208925,
+    reviews: 3676
+  },
+  {
+    _id: ISODate('2022-02-18T00:00:00.000Z'),
+    average_rating: 4.322865554465162,
+    reviews: 4076
+  },
+  {
+    _id: ISODate('2022-02-19T00:00:00.000Z'),
+    average_rating: 4.355322695879972,
+    reviews: 4199
+  },
+  {
+    _id: ISODate('2022-02-20T00:00:00.000Z'),
+    average_rating: 4.354783459750428,
+    reviews: 4087
+  },
+  {
+    _id: ISODate('2022-02-21T00:00:00.000Z'),
+    average_rating: 4.302151075537769,
+    reviews: 3998
+  },
+  {
+    _id: ISODate('2022-02-22T00:00:00.000Z'),
+    average_rating: 4.29270166453265,
+    reviews: 3905
+  },
+  {
+    _id: ISODate('2022-02-23T00:00:00.000Z'),
+    average_rating: 4.282554671968191,
+    reviews: 4024
+  },
+  {
+    _id: ISODate('2022-02-24T00:00:00.000Z'),
+    average_rating: 4.343116883116883,
+    reviews: 3850
+  },
+  {
+    _id: ISODate('2022-02-25T00:00:00.000Z'),
+    average_rating: 4.320529801324503,
+    reviews: 3775
+  },
+  {
+    _id: ISODate('2022-02-26T00:00:00.000Z'),
+    average_rating: 4.298309178743962,
+    reviews: 4140
+  },
+  {
+    _id: ISODate('2022-02-27T00:00:00.000Z'),
+    average_rating: 4.279498699456136,
+    reviews: 4229
+  },
+  {
+    _id: ISODate('2022-02-28T00:00:00.000Z'),
+    average_rating: 4.2766515621273555,
+    reviews: 4193
+  },
+  {
+    _id: ISODate('2022-03-01T00:00:00.000Z'),
+    average_rating: 4.342850818946436,
+    reviews: 4518
+  },
+  {
+    _id: ISODate('2022-03-02T00:00:00.000Z'),
+    average_rating: 4.355896226415094,
+    reviews: 4240
+  },
+  {
+    _id: ISODate('2022-03-03T00:00:00.000Z'),
+    average_rating: 4.33760075865339,
+    reviews: 4218
+  },
+  {
+    _id: ISODate('2022-03-04T00:00:00.000Z'),
+    average_rating: 4.349529003470501,
+    reviews: 4034
+  },
+  {
+    _id: ISODate('2022-03-05T00:00:00.000Z'),
+    average_rating: 4.308592835401545,
+    reviews: 4271
+  },
+  {
+    _id: ISODate('2022-03-06T00:00:00.000Z'),
+    average_rating: 4.270112254443405,
+    reviews: 4276
+  },
+  {
+    _id: ISODate('2022-03-07T00:00:00.000Z'),
+    average_rating: 4.2020623618954085,
+    reviews: 4073
+  },
+  {
+    _id: ISODate('2022-03-08T00:00:00.000Z'),
+    average_rating: 4.306001481847369,
+    reviews: 4049
+  },
+  {
+    _id: ISODate('2022-03-09T00:00:00.000Z'),
+    average_rating: 4.319959110656785,
+    reviews: 3913
+  },
+  {
+    _id: ISODate('2022-03-10T00:00:00.000Z'),
+    average_rating: 4.098718557190318,
+    reviews: 4214
+  },
+  {
+    _id: ISODate('2022-03-11T00:00:00.000Z'),
+    average_rating: 4.316598360655738,
+    reviews: 3904
+  },
+  {
+    _id: ISODate('2022-03-12T00:00:00.000Z'),
+    average_rating: 4.344724770642202,
+    reviews: 4360
+  },
+  {
+    _id: ISODate('2022-03-13T00:00:00.000Z'),
+    average_rating: 4.31335952848723,
+    reviews: 4072
+  },
+  {
+    _id: ISODate('2022-03-14T00:00:00.000Z'),
+    average_rating: 4.289981972701519,
+    reviews: 3883
+  },
+  {
+    _id: ISODate('2022-03-15T00:00:00.000Z'),
+    average_rating: 4.296471827277514,
+    reviews: 3798
+  },
+  {
+    _id: ISODate('2022-03-16T00:00:00.000Z'),
+    average_rating: 4.319715340010543,
+    reviews: 3794
+  },
+  {
+    _id: ISODate('2022-03-17T00:00:00.000Z'),
+    average_rating: 4.294638694638695,
+    reviews: 4290
+  },
+  {
+    _id: ISODate('2022-03-18T00:00:00.000Z'),
+    average_rating: 4.30287859824781,
+    reviews: 3995
+  },
+  {
+    _id: ISODate('2022-03-19T00:00:00.000Z'),
+    average_rating: 4.281387181738367,
+    reviews: 4556
+  },
+  {
+    _id: ISODate('2022-03-20T00:00:00.000Z'),
+    average_rating: 4.306182310469314,
+    reviews: 4432
+  },
+  {
+    _id: ISODate('2022-03-21T00:00:00.000Z'),
+    average_rating: 4.384937238493724,
+    reviews: 4063
+  },
+  {
+    _id: ISODate('2022-03-22T00:00:00.000Z'),
+    average_rating: 4.355066771406127,
+    reviews: 3819
+  },
+  {
+    _id: ISODate('2022-03-23T00:00:00.000Z'),
+    average_rating: 4.297648211660951,
+    reviews: 4082
+  },
+  {
+    _id: ISODate('2022-03-24T00:00:00.000Z'),
+    average_rating: 4.257533552798177,
+    reviews: 3949
+  },
+  {
+    _id: ISODate('2022-03-25T00:00:00.000Z'),
+    average_rating: 4.245377311344328,
+    reviews: 4002
+  },
+  {
+    _id: ISODate('2022-03-26T00:00:00.000Z'),
+    average_rating: 4.3132730732635585,
+    reviews: 4204
+  },
+  {
+    _id: ISODate('2022-03-27T00:00:00.000Z'),
+    average_rating: 4.32252641690682,
+    reviews: 4164
+  },
+  {
+    _id: ISODate('2022-03-28T00:00:00.000Z'),
+    average_rating: 4.310774946921444,
+    reviews: 3768
+  },
+  {
+    _id: ISODate('2022-03-29T00:00:00.000Z'),
+    average_rating: 4.2869808679421375,
+    reviews: 4286
+  },
+  {
+    _id: ISODate('2022-03-30T00:00:00.000Z'),
+    average_rating: 4.288270377733598,
+    reviews: 4024
+  },
+  {
+    _id: ISODate('2022-03-31T00:00:00.000Z'),
+    average_rating: 4.318956611570248,
+    reviews: 3872
+  },
+  {
+    _id: ISODate('2022-04-01T00:00:00.000Z'),
+    average_rating: 4.300151591712987,
+    reviews: 3958
+  },
+  {
+    _id: ISODate('2022-04-02T00:00:00.000Z'),
+    average_rating: 4.243452232476927,
+    reviews: 4009
+  },
+  {
+    _id: ISODate('2022-04-03T00:00:00.000Z'),
+    average_rating: 4.28901449987712,
+    reviews: 4069
+  },
+  {
+    _id: ISODate('2022-04-04T00:00:00.000Z'),
+    average_rating: 4.283013622463164,
+    reviews: 3597
+  },
+  {
+    _id: ISODate('2022-04-05T00:00:00.000Z'),
+    average_rating: 4.260761589403973,
+    reviews: 3624
+  }
+]
