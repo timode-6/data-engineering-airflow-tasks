@@ -1,0 +1,99 @@
+
+STRUCTURE
+  database.csv: 1,985,327,688 bytes, 12,157,458 rows, ~163 bytes/row
+  rows read              12,157,458
+  lines skipped                   0  (wrong number of fields)
+
+MISSING / UNPARSABLE (non-empty but not a number or timestamp)
+  departure_id               missing          0   unparsable  408,100   e.g. ['A10', 'A10', 'A10']
+  return_id                  missing          0   unparsable  408,101   e.g. ['19-', 'A10', 'A10']
+  avg_speed (km/h)           missing      3,550   unparsable        0
+  return_latitude            missing          1   unparsable        0
+  return_longitude           missing          1   unparsable        0
+  Air temperature (degC)     missing     15,902   unparsable        0
+
+TIME
+  departure  2016-05-02 09:31:00  ..  2020-10-31 23:58:46
+  return     2016-05-02 09:32:00  ..  2020-11-02 23:36:36
+  rows departing earlier than the row before: 3
+  times the month goes backwards:              3
+  days with trips 1,009; trips per day: median 11,249, max 32,082 on 2019-06-06
+
+ROWS PER MONTH (34 months)
+  2016-05    79,421    2016-06    74,997    2016-07    75,588    2016-08    78,565
+  2016-09    63,655    2016-10    35,874    2017-05   246,677    2017-06   311,601
+  2017-07   332,789    2017-08   357,442    2017-09   236,926    2017-10   121,373
+  2018-04   215,966    2018-05   637,279    2018-06   563,532    2018-07   568,055
+  2018-08   601,219    2018-09   388,915    2018-10   250,938    2019-04   406,580
+  2019-05   599,653    2019-06   715,132    2019-07   666,321    2019-08   689,484
+  2019-09   450,039    2019-10   260,348    2020-03    41,370    2020-04   279,479
+  2020-05   457,129    2020-06   616,257    2020-07   518,223    2020-08   569,821
+  2020-09   388,873    2020-10   257,937
+
+RETURN TIMESTAMP vs DURATION   (gap = return - departure - duration)
+  gap within 1 s                                         1,408,225   11.58%
+  gap within 60 s                                       12,015,472   98.83%
+  gap over 1 h                                              43,424    0.36%
+    e.g. (departure, return, duration, distance):
+      2020-03-23 06:44:37, 2020-03-24 12:02:19, 1195.0, 3651.0
+      2020-03-23 06:55:12, 2020-03-23 14:46:02, 469.0, 1272.0
+      2020-03-23 07:02:19, 2020-03-24 12:01:52, 538.0, 1359.0
+  duration longer than elapsed by >60 s                      3,022    0.02%
+  return before departure                                       57    0.00%
+  elapsed over 1 day                                         9,518    0.08%
+DISTANCE / DURATION EDGES
+  distance <= 0                                            387,741    3.19%
+  distance 0 < d < 10                                      174,765    1.44%
+  distance > 20 km                                           4,206    0.03%
+  distance > 100 km                                            563    0.00%
+  duration <= 0                                              3,550    0.03%
+  duration 0 < t < 10                                       18,192    0.15%
+  duration > 5 h                                            33,443    0.28%
+  duration > 1 day                                           6,777    0.06%
+  distance <= 0 and duration >= 60                         110,236    0.91%
+
+AVG_SPEED COLUMN (rows with distance > 0 and duration > 0)
+  equals distance/duration in km/min                    11,769,717  100.00%
+  equals distance/duration in km/h                               0    0.00%
+  infinite values                                                0    0.00%
+  recomputed speed > 30 km/h                                11,527    0.09%
+  recomputed speed > 50 km/h                                 1,837    0.02%
+  recomputed speed < 1 km/h (distance > 0)                 306,119    2.52%
+
+QUANTILES                                   p0      p0.1        p1        p5       p50       p95       p99     p99.9      p100
+  distance (m)                      -4292467.0       0.0       0.0      14.0    1739.0    5256.0    7414.0   14404.0 3681399.0   mean 2295.27
+  duration (s)                             0.0       8.0      17.0     109.0     586.0    1673.0    4776.0   60531.9 5401659.0   mean 959.78
+  speed (km/h, recomputed)                 0.0       0.0       0.2       3.4      11.3      16.1      18.3      30.0 1019462.1   mean 20.80
+  temperature (C)                         -5.2      -1.2       1.9       5.5      16.4      24.1      27.1      29.5      32.9   mean 15.65
+  return - departure - duration (s) -4909979.0     -51.0     -38.0     -17.0       4.0      31.0      89.0   21402.1 6142014.0   mean 140.44
+
+TEMPERATURE
+  hours with trips 24,124
+  hours with more than one temperature value 0
+  rows without temperature 15,902
+    months with the most: {'2020-09': 4490, '2019-06': 2868, '2019-08': 2067, '2018-05': 2013, '2019-09': 1700}
+
+STATIONS (departure and return columns together)
+  distinct ids 366
+  distinct names 347
+  ids with several names: 8
+    47: Vanha Kauppahalli (64,658), Unioninkatu (29,761)
+    60: Itämerentori (148,598), Kaapelitehdas (15,184)
+    100: Teljäntie (30,610), Ulvilantie (5,193)
+    113: Diakoniapuisto (106,619), Pasilan asema (65,397)
+  names with several ids: 25
+    Auringonkatu: 643 (16,071), 154 (3,814)
+    Avaruuskatu: 633 (13,264), 152 (1,707)
+    Diakoniapuisto: 113 (106,619), 46 (106,054)
+    Etuniementie: 619 (10,654), 157 (1,867)
+  departure_id not a whole number                                0    0.00%
+  departure_id missing, name present                       408,100    3.36%
+  return_id not a whole number                                   0    0.00%
+  return_id missing, name present                          408,101    3.36%
+  ids with more than one coordinate pair 8
+
+UNIQUENESS (64-bit row hashes; chance collisions are negligible at this size)
+  identical rows (extra copies)                                166    0.00%
+    most copies of one row 2
+  rows repeating departure + departure_id                  380,220    3.13%
+  rows repeating departure + both ids + return             102,215    0.84%

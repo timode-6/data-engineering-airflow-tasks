@@ -1,0 +1,11 @@
+# Local development: this project as an editable package, plus what the
+# scripts, tests and lint need.
+-e .
+pandas==3.0.5
+numpy==2.5.3
+boto3==1.43.123
+python-dotenv==1.2.3
+# The Spark test needs Java 17 or 21 in JAVA_HOME.
+pyspark==4.1.2
+pytest==9.1.1
+ruff==0.16.8

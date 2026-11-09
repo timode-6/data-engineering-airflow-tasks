@@ -1,0 +1,25 @@
+[project]
+name = "bikes-pipeline"
+version = "0.1.0"
+description = "Helsinki city bikes: Airflow and Spark to S3, then SQS and a pandas Lambda to DynamoDB, on LocalStack"
+requires-python = ">=3.12"
+dependencies = ["pandas>=3.0", "boto3>=1.28.57", "python-dotenv>=1.0"]
+
+[build-system]
+requires = ["setuptools>=80"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "I", "N", "UP", "B", "SIM"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src", "tests"]
+testpaths = ["tests"]
