@@ -1,0 +1,33 @@
+# Alert rules. Each [[rules]] table is one rule, and `type` picks the class
+# that implements it (RULE_TYPES in src/log_alerts/rules.py).
+#
+# A "threshold" rule fires when more than `threshold` matching rows fall
+# within less than `window`:
+#   where      rows that count: column = value, or column = [value, value]
+#   group_by   count separately for each value of this column (optional)
+#   window     a duration: "60s", "1min", "1h", or a number of seconds
+#   threshold  fire when the count goes above this
+#   cooldown   after an alert, stay quiet this long for the same group
+#              (optional, one window by default)
+#   lateness   how far behind the newest row a row may arrive and still
+#              count (optional, "5min" by default)
+#
+# The logs have no "Fatal" severity, only "Error" and "Success", so the
+# fatal errors of the task are the rows with severity "Error".
+
+[[rules]]
+name = "fatal_errors_per_minute"
+type = "threshold"
+description = "More than 10 fatal errors in less than one minute"
+where = { severity = "Error" }
+window = "1min"
+threshold = 10
+
+[[rules]]
+name = "fatal_errors_per_bundle_per_hour"
+type = "threshold"
+description = "More than 10 fatal errors in less than one hour for one bundle_id"
+where = { severity = "Error" }
+group_by = "bundle_id"
+window = "1h"
+threshold = 10

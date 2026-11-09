@@ -1,0 +1,52 @@
+# Additions to the official Airflow docker-compose.yaml
+
+name: bikes
+
+x-airflow-extras: &airflow-extras
+  environment:
+    PYTHONPATH: /opt/airflow/src
+    AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+    AWS_ENDPOINT_URL: http://localstack:4566
+    AIRFLOW_CONN_AWS_DEFAULT: >-
+      {"conn_type": "aws",
+      "extra": {"endpoint_url": "http://localstack:4566",
+      "config_kwargs": {"s3": {"addressing_style": "path"}}}}
+  volumes:
+    - ${AIRFLOW_PROJ_DIR:-.}/src:/opt/airflow/src:ro
+    - ${AIRFLOW_PROJ_DIR:-.}/jobs:/opt/airflow/jobs:ro
+    - ${AIRFLOW_PROJ_DIR:-.}/data:/opt/airflow/data
+
+services:
+  localstack:
+    image: ${LOCALSTACK_IMAGE:-localstack/localstack:4.14.0}
+    ports:
+      - "127.0.0.1:4566:4566"
+    environment:
+      LOCALSTACK_AUTH_TOKEN: ${LOCALSTACK_AUTH_TOKEN:-}
+      LAMBDA_DOCKER_NETWORK: bikes_default
+      DYNAMODB_IN_MEMORY: ${DYNAMODB_IN_MEMORY:-1}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - localstack-cache:/var/lib/localstack
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:4566/_localstack/health"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+
+  airflow-apiserver:
+    <<: *airflow-extras
+  airflow-scheduler:
+    <<: *airflow-extras
+  airflow-dag-processor:
+    <<: *airflow-extras
+  airflow-worker:
+    <<: *airflow-extras
+  airflow-triggerer:
+    <<: *airflow-extras
+  airflow-init:
+    <<: *airflow-extras
+
+volumes:
+  localstack-cache:

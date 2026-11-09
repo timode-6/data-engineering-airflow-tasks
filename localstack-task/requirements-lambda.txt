@@ -1,0 +1,4 @@
+# The loader Lambda's dependencies; its runtime has boto3. Same pins as
+# requirements-dev.txt, so the tests run on what the Lambda runs.
+pandas==3.0.5
+numpy==2.5.3

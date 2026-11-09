@@ -1,0 +1,10 @@
+# The image needs only requirements.txt, rules.toml and src/
+data/
+tests/
+docs/
+.git/
+.venv/
+**/__pycache__/
+.pytest_cache/
+.ruff_cache/
+.env

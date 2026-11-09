@@ -1,0 +1,13 @@
+# Runtime data: the dataset (500 MB) and everything the services write.
+# data/source/ stays in the repo, empty, as the place for the dataset.
+data/*
+!data/source/
+data/source/*
+!data/source/.gitkeep
+
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.venv/
+.env
