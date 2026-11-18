@@ -1,0 +1,8 @@
+.env
+docker-compose.yaml
+logs/
+plugins/
+config/
+data/incoming/*
+!data/incoming/.gitkeep
+__pycache__/
