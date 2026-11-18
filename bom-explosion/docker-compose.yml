@@ -1,0 +1,16 @@
+# Postgres for the SQL part. The project folder is mounted at /work, so psql
+# inside the container can read data/ and output/.
+services:
+  postgres:
+    image: postgres:18
+    environment:
+      POSTGRES_PASSWORD: postgres # local only
+    ports:
+      - "5432:5432"
+    volumes:
+      - .:/work:ro
+    healthcheck:
+      # over TCP: while the first start sets things up, the server only listens on a socket
+      test: ["CMD", "pg_isready", "-U", "postgres", "-h", "127.0.0.1"]
+      interval: 1s
+      retries: 30
